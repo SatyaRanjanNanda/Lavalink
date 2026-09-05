@@ -1,8 +1,0 @@
-{
-  "name": "private-nodelink",
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "start": "node --dns-result-order=ipv4first dist/src/index.js"
-  }
-}
