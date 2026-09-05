@@ -7,7 +7,7 @@ WORKDIR /app
 # Pull build tools and clone the core engine repository
 RUN apk add --no-cache git python3 make g++ \
     && git clone https://github.com/PerformanC/NodeLink.git . \
-    && npm install --omit=dev
+    && npm install --omit=dev --ignore-scripts
 
 # Inform routing about Render's target port
 EXPOSE 7860
