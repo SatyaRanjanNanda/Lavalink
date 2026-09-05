@@ -6,7 +6,7 @@ WORKDIR /app
 # Install native compilation dependencies
 RUN apk add --no-cache git python3 make g++
 
-# Clone the official NodeLink repository
+# Clone the official NodeLink repository with the complete path
 RUN git clone https://github.com .
 
 # Install ALL packages (including devDependencies required for compilation)
