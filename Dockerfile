@@ -1,20 +1,38 @@
-# Use the official Node.js Alpine base for ultra-low resource footprint
-FROM node:22-alpine
+# Step 1: Build Environment
+FROM node:22-alpine AS builder
 
-# Set application context directory
 WORKDIR /app
 
-# Pull build tools and clone the core engine repository
-RUN apk add --no-cache git python3 make g++ \
-    && git clone https://github.com . \
-    && npm install --omit=dev --ignore-scripts
+# Install native compilation dependencies
+RUN apk add --no-cache git python3 make g++
 
-# Inform routing about Render's target port
+# Clone the official NodeLink repository
+RUN git clone https://github.com .
+
+# Install ALL packages (including devDependencies required for compilation)
+RUN npm install --ignore-scripts
+
+# Build/Compile the production distribution assets
+RUN npm run build
+
+# Remove development packages to minimize memory footprint
+RUN npm prune --omit=dev
+
+
+# Step 2: Production Execution Runtime
+FROM node:22-alpine
+
+WORKDIR /app
+
+# Copy over only the compiled source code and production dependencies
+COPY --from=builder /app /app
+
+# Expose Render's assigned network channel
 EXPOSE 7860
 
-# Assign system container defaults
+# Assign runtime default options
 ENV NODELINK_PORT=7860
 ENV NODELINK_PASSWORD=YOUR_SECURE_PASSWORD
 
-# Fire up the runtime engine using the correct compiled distribution path
+# Start the optimized server engine smoothly
 CMD ["node", "dist/index.js"]
