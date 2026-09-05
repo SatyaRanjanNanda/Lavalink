@@ -1,8 +1,6 @@
 {
   "name": "private-nodelink",
   "version": "1.0.0",
-  "description": "Native NodeLink on Render Free Tier",
-  "main": "dist/src/index.js",
   "type": "module",
   "scripts": {
     "start": "node --dns-result-order=ipv4first dist/src/index.js"
